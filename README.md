@@ -15,3 +15,6 @@ g031k037
 - 基礎課題3
 [動作ページ](http://49.212.46.130/~g031k037/cake/Forms/nyuryoku)
 [コード](https://github.com/o-shida/g031k037/blob/master/cake/app/Controller/FormsController.php)
+
+- 発展課題1
+[動作ページ](http://49.212.46.130/~g031k037/kadai6.php)
