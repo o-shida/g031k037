@@ -12,35 +12,35 @@
 		}
 		public function create($id = null){
 			$this->set("action",$this->action);
-			if(isset($this->request->data['create']['contribution'])){
+			if(isset($this->request->data['create']['contribution'])){//コメント投稿する場合
 				$this->set('data',$this->request->data['create']['contribution']); 
-			}elseif($id != null){
+			}elseif($id != null){//編集する場合
 				$this->set('id_data',$this->request->data['edit']); }
 		}
 
-		public function entry(){
+		public function entry(){//コメントを保存
 			$this->Board->toukou($this->request->data);
 			$this->redirect(array('action' => 'index'));
 		}
 
-		public function compile($id = null){
+		public function compile($id = null){//コメントを編集
 			if($id == null){
 				$this->set('id_data',$this->request->data['edit']);
 			}
 		}
 
-		public function last(){
+		public function last(){//編集結果を保存
 			$this->Board->end($this->request->data['entry']);
 			$this->redirect(array('action' => 'index'));
 		}
 
-		public function edit($id){
+		public function edit($id){//編集画面に移る
 			$this->set("action",$this->action);
 			$this->set('id_data',$this->Board->findById($id));
 			$this->render('create');
 		}
 
-		public function delete($id){
+		public function delete($id){//削除
 			$this->Board->delete($id);
 			$this->redirect(array('action' => 'index'));
 		}
