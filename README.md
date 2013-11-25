@@ -7,7 +7,7 @@ g031k037
 ----------------
 - 基礎課題1
 [動作ページ](http://49.212.46.130/~g031k037/cake/boards)
-[コード](https://github.com/o-shida/g031k037/blob/master/cake/app/Controller/APIsController.php)
+[コード](https://github.com/o-shida/g031k037/blob/master/cake/app/Controller/BoardsController.php)
 
 - 基礎課題2
 [動作ページ](http://49.212.46.130/~g031k037/kiso7.php)
