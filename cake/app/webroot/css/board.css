@@ -1,0 +1,39 @@
+@charset "utf-8";
+
+h1 {
+	color: #FF69B4;
+}
+
+body {
+	background: #AFEEEE;
+	color: #000000;
+	font-family:"verdana",sans-serif;
+	font-size:90%;
+	margin: 0 auto;
+	text-align: center;
+	border-style: solid;
+	width: 600px
+}
+
+a {
+	color: #003d4c;
+	text-decoration: underline;
+	font-weight: bold;
+}
+
+#header{
+	padding: 10px 20px;
+}
+
+#header h1 {
+	line-height:20px;
+	background: #003d4c;
+	color: #fff;
+	padding: 0px 30px;
+}
+
+#footer {
+	clear: both;
+	padding: 10px 10px;
+	text-align: right;
+}
