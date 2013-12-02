@@ -1,5 +1,4 @@
 <?php
-		//投稿を確認する画面
 		echo $this->Form->create('entry',array(
 		'type' => 'post',
 		'url' => 'last'
@@ -11,5 +10,4 @@
 		echo $this->html->tag('br ');
 		echo $this->Form->submit('確定する',array('name'=>'change','div'=>false));
 		echo $this->Form->end();
-
 ?>
