@@ -15,7 +15,7 @@
                            "message" => "このユーザは既に登録されています"
                         ),
                         'custom' => array(
-                          'rule' => array('custom', '/^[a-z]+$/'),
+                          'rule' => array('custom', '/^[a-zA-Z]+$/'),
                            'message' => '英字のみで入力してください。'
                         )
                     ),
