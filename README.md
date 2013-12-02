@@ -3,6 +3,12 @@ g031k037
 
 課題提出用
 
+第8回 課題
+----------------
+- 基礎課題1,2
+[動作ページ](http://49.212.46.130/~g031k037/cake/boards/login)
+[コード](https://github.com/o-shida/g031k037/blob/master/cake/app/Controller/BoardsController.php)
+
 第7回 課題
 ----------------
 - 基礎課題1
