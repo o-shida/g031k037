@@ -7,7 +7,8 @@
 				));
 			echo $this->Form->label('edit.comment','編集内容');
 			echo $this->Form->text('edit.comment', array(
-				'value' => $id_data['Board']['comment']
+				'value' => $id_data['Board']['comment'],
+				'required' => 'required'
 				));	
 			echo $this->Form->hidden('edit.id',array('value' => $id_data['Board']['id']));
 			echo $this->Form->submit('投稿する',array('name'=>'point','div'=>false));
@@ -19,6 +20,7 @@
 				));
 			echo $this->Form->label('create.contribution','投稿内容');
 			echo $this->Form->text('create.contribution',array(
+				'required' => 'required'
 				));
 			echo $this->Form->submit('投稿する',array('name'=>'reg','div'=>false));
 			echo $this->Form->end();
