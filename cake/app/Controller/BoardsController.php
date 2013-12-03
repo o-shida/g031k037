@@ -54,7 +54,7 @@
                 if ($this->request->data['User']['password'] === $this->request->data['User']['pass_check']){
                     $data = $this->request->data;
                     $data['User']['password'] = AuthComponent::password($data['User']['password']);
-                    $data['User']['pass_check'] = AuthComponent::password($data['User']['pass_check']);
+                    // $data['User']['pass_check'] = AuthComponent::password($data['User']['pass_check']);
                     $this->User->create();//ユーザーの作成
 
                     if ($this->User->save($data)){//バリデーションを呼び出して成功ならば

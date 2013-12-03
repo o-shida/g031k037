@@ -24,13 +24,13 @@
                           )
                          ),
                     'password' => array(
-                      'rule' => 'alphaNumeric',
+                      'rule' => 'notempty',
                       'required' => true,
                       'alloEmpty' => false,
                       'message' => '必ず入力して下さい'
                           ),
                     'pass_check' => array(
-                      'rule' => 'alphaNumeric',
+                      'rule' => 'notempty',
                       'required' => true,
                       'alloEmpty' => false,
                       'message' => '必ず入力して下さい'
