@@ -57,11 +57,11 @@
                     $data['User']['pass_check'] = AuthComponent::password($data['User']['pass_check']);
                     $this->User->create();//ユーザーの作成
 
-                    if ($this->User->save($data)){
+                    if ($this->User->save($data)){//バリデーションを呼び出して成功ならば
                         $mes = '新規ユーザーを追加しました';
                         $this->Session->setFlash(__($mes));   
                         $this->redirect(array('action' => 'login'));//リダイレクト    
-                    }else{
+                    }else{//失敗ならば
                         $mes = '登録できませんでした。やり直して下さい';
                     }
                 }else{
@@ -120,12 +120,19 @@
 		}
         public function search(){
             $num = $this->request->data['search']['num'];
-            $word = $this->request->data['s_word'];
+            $word = $this->request->data['search']['word'];
+            $this->set('num',$num);
+            $this->set('word',$word);
              // var_dump($word);
             if(isset($this->request->data['search'])) {
-                $this->set('data',$this->Board->find('all',array('limit' => $num ,
+                if(isset($this->request->data['asc'])) {
+                $this->set('data',$this->Board->find('all',array('limit' => $num ,'order' => 'Board.id ASC',
                 'conditions' => array('Board.comment like' => '%'. $word. '%'))));
-            }
-            $this->set('user',$this->User->find('all',array()));
-        }
-	}
+                 }else{
+                  $this->set('data',$this->Board->find('all',array('limit' => $num ,'order' => 'Board.id DESC',
+                'conditions' => array('Board.comment like' => '%'. $word. '%'))));
+                }
+                $this->set('user',$this->User->find('all',array()));
+             }
+    	}
+    }
