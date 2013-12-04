@@ -42,16 +42,16 @@
             }
         }
  
-        public function logout(){
+        public function logout(){//ログアウト
             $this->Auth->logout();
             $this->Session->destroy(); //セッションを完全削除
             $this->Session->setFlash(__('ログアウトしました'));
             $this->redirect(array('action' => 'login'));
         }
  
-		public function useradd(){
+		public function useradd(){//新規登録
             if($this->request->is('post')) {
-                if ($this->request->data['User']['password'] === $this->request->data['User']['pass_check']){
+                if ($this->request->data['User']['password'] === $this->request->data['User']['pass_check']){//パスワードが一致するか
                     $data = $this->request->data;
                     $data['User']['password'] = AuthComponent::password($data['User']['password']);
                     // $data['User']['pass_check'] = AuthComponent::password($data['User']['pass_check']);
@@ -64,7 +64,7 @@
                     }else{//失敗ならば
                         $mes = '登録できませんでした。やり直して下さい';
                     }
-                }else{
+                }else{//パスワードの値が一致しなかった場合
                     $mes = "パスワードの値が一致しません。";
                 }
                 $this->Session->setFlash(__($mes));   
@@ -118,17 +118,17 @@
 			$this->Board->delete($id);
 			$this->redirect(array('action' => 'index'));
 		}
-        public function search(){
+        public function search(){//検索
             $num = $this->request->data['search']['num'];
             $word = $this->request->data['search']['word'];
             $this->set('num',$num);
             $this->set('word',$word);
              // var_dump($word);
             if(isset($this->request->data['search'])) {
-                if(isset($this->request->data['asc'])) {
+                if(isset($this->request->data['asc'])) {//昇順が押されたとき
                 $this->set('data',$this->Board->find('all',array('limit' => $num ,'order' => 'Board.id ASC',
                 'conditions' => array('Board.comment like' => '%'. $word. '%'))));
-                 }else{
+                 }else{//初期状態と降順が押されたとき
                   $this->set('data',$this->Board->find('all',array('limit' => $num ,'order' => 'Board.id DESC',
                 'conditions' => array('Board.comment like' => '%'. $word. '%'))));
                 }

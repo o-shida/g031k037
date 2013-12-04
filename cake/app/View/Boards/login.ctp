@@ -1,5 +1,5 @@
 <div class="hero-unit">
-    <?php echo $this->Session->flash('Auth'); ?>
+    <!-- <?php echo $this->Session->flash('Auth'); ?> -->
     <?php echo $this->Form->create('User', array('url' => 'login')); ?>
     <?php echo $this->Form->input('User.name', array('label' => '名前')); ?>
     <?php echo $this->Form->input('User.password', array('label' => 'パスワード')); ?>

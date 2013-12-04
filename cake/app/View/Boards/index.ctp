@@ -35,7 +35,7 @@ echo $this->Form->text('search.word',array());//検索するワード
 echo $this->Form->submit('検索',array('name'=>'search','div'=>false));//検索
 echo $this->Form->end();
 
-echo $this->html->link('投稿する','/Boards/create',array('name'=>'and'));
+echo $this->html->link('コメントを投稿する','/Boards/create',array('name'=>'and'));
 
 echo $this->html->tag('br ');
 foreach($data as $value){
