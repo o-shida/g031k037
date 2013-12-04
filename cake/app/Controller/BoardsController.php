@@ -74,9 +74,9 @@
 		public function index(){
             // $this->set('name',$this->request->data['User']['name']);
             if(isset($this->request->data['asc'])) {
-                $this->set('data',$this->Board->find('all',array('order' => 'Board.id ASC')));
+                $this->set('data',$this->request->data('all',array('order' => 'Board.id ASC')));
             }else{
-		          $this->set('data',$this->Board->find('all',array('order' => 'Board.id DESC')));
+		         $box = $this->set('data',$this->Board->find('all',array('order' => 'Board.id DESC')));
             }
 			$this->set('user',$this->User->find('all',array()));
 		}
@@ -129,7 +129,7 @@
                 $this->set('data',$this->Board->find('all',array('limit' => $num ,'order' => 'Board.id ASC',
                 'conditions' => array('Board.comment like' => '%'. $word. '%'))));
                  }else{//初期状態と降順が押されたとき
-                  $this->set('data',$this->Board->find('all',array('limit' => $num ,'order' => 'Board.id DESC',
+                $this->set('data',$this->Board->find('all',array('limit' => $num ,'order' => 'Board.id DESC',
                 'conditions' => array('Board.comment like' => '%'. $word. '%'))));
                 }
                 $this->set('user',$this->User->find('all',array()));

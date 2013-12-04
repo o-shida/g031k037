@@ -29,6 +29,7 @@ foreach($data as $value){
 	}
 	echo $this->html->tag('br ');
 }
+
 echo $this->Form->create('return',array(//ログアウト
 				'type' => 'post',
 				'url' => 'index'

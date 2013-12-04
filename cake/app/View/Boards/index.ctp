@@ -30,7 +30,12 @@ echo $this->Form->select('search.num',array(//検索件数
 	'2' => '2件',
 	'3' => '3件',
 	'4' => '4件',
-	'5' => '5件'));
+	'5' => '5件',
+	'6' => '6件', 
+	'7' => '7件',
+	'8' => '8件',
+	'9' => '9件',
+	'10' => '10件'));
 echo $this->Form->text('search.word',array());//検索するワード
 echo $this->Form->submit('検索',array('name'=>'search','div'=>false));//検索
 echo $this->Form->end();
