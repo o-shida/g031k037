@@ -107,4 +107,6 @@ CakeLog::config('error', array(
 	'types' => array('warning', 'error', 'critical', 'alert', 'emergency'),
 	'file' => 'error',
 ));
+//Debugkitの導入
 CakePlugin::load('DebugKit');
+CakePlugin::load('TwitterKit');

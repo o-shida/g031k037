@@ -1,6 +1,8 @@
  <?php
-echo 'name: '.$this->Session->read('myname');
-$name = $this->Session->read('myname');
+ // var_dump($user_a);
+echo $name = 'name:'.$user_a['name'];
+// $name = $this->Session->read('myname');
+// echo 'name: '.$this->Session->read('myname');
 echo $this->Form->create('logout',array(//ログアウト
 				'type' => 'post',
 				'url' => 'logout'
@@ -51,7 +53,7 @@ foreach($data as $value){
 		if($value['Board']['user_id'] == $key['User']['id']){
 	 		echo $key['User']['name'].' ';
 	 		echo $key['User']['email'].' ';
-		 	if($name == $key['User']['name']){
+		 	if($user_a['name'] == $key['User']['name']){
 			echo $this->html->link('編集','/Boards/edit/'.$id,array('escape'=>false));
 			echo $this->html->link('×','/Boards/delete/'.$id,array('escape'=>false));
 			}

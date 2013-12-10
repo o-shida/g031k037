@@ -1,10 +1,13 @@
 <?php
+App::import('Vendor','facebook',array('file' => 'facebook'.DS.'src'.DS.'facebook.php'));
+ 
 	//AppControllerという関数を呼び出している。関数の名前ですでにあるものを定義していしまうとエラーが出る。
 	class BoardsController extends AppController {
 		public $name = 'Boards';
-		public $uses = array('Board','User');
+		public $uses = array('Board','User','NewUser');
 		public $components = array(
             'DebugKit.Toolbar', //デバッグきっと
+            'TwitterKit.Twitter', //twitter
             'Auth' => array( //ログイン機能を利用する
                 'authenticate' => array(
                     'Form' => array(
@@ -13,7 +16,7 @@
                     )
                 ),
                 //ログイン後の移動先
-                'loginRedirect' => array('controller' => 'boards', 'action' => 'index'),
+                'loginRedirect' => array('controller' => 'boards', 'action' => 'index/'),
                 //ログアウト後の移動先
                 'logoutRedirect' => array('controller' => 'boards', 'action' => 'login'),
                 //ログインページのパス
@@ -25,12 +28,83 @@
 		public $helpers = array('Html');
 		public $layout = 'board';
 		public function beforeFilter(){//login処理の設定
-		 	$this->Auth->allow('login','logout','useradd');//ログインしないで、アクセスできるアクションを登録する
-		 	$this->set('user',$this->Auth->user()); // ctpで$userを使えるようにする 。
+		 	$this->Auth->allow('login','logout','useradd','twitter_login','oauth_callback','index','facebook','fbpost','createFacebook');//ログインしないで、アクセスできるアクションを登録する
+		 	$this->set('user_a',$this->Auth->user()); // ctpで$userを使えるようにする 
 		}
 
+        public function twitter_login(){//twitterのOAuth用ログインURLにリダイレクト
+            $this->redirect($this->Twitter->getAuthenticateUrl(null, true));
+        }
+ 
+
+        public function oauth_callback() {
+            if(!$this->Twitter->isRequested()){//認証が実施されずにリダイレクト先から遷移してきた場合の処理
+                $this->flash(__('invalid access.'), '/', 5);
+                return;
+            }
+            $this->Twitter->setTwitterSource('twitter');//アクセストークンの取得を実施
+            $token = $this->Twitter->getAccessToken();
+            $data = $this->NewUser->signin($token); //ユーザ登録
+            $this->Auth->login($data); //CakePHPのAuthログイン処理
+            $this->redirect($this->Auth->loginRedirect); //ログイン後画面へリダイレクト
+        }
+
+
+    function showdata(){//トップページ
+        $facebook = $this->createFacebook(); //セッション切れ対策 (?)
+        $myFbData = $this->Session->read('mydata');//facebookのデータ
+        //$myFbData_kana = $this->Session->read('fbdata_kana'); //フリガナ
+        //pr($myFbData_kana); //フリガナデータ表示
+        pr($myFbData);//表示
+        // $this->fbpost("hello world");//facebookに投稿
+    }
+ 
+    public function facebook(){//facebookの認証処理部分
+        $this->autoRender = false;
+        $this->facebook = $this->createFacebook();
+        $user = $this->facebook->getUser();//ユーザ情報取得
+        if($user){//認証後
+            $me = $this->facebook->api('/me','GET',array('locale'=>'ja_JP'));//ユーザ情報を日本語で取得
+            $this->Session->write('mydata',$me);//fbデータをセッションに保存
+            $data = $this->NewUser->signinfb($this->Session->read('mydata'));
+            if ($this->Auth->login($data))
+                return $this->redirect($this->Auth->redirect());
+            //フリガナを取得する．
+            //$me_kana = $this->facebook->api('/fql?q=SELECT+first_name%2C+sort_first_name%2C+last_name%2C+sort_last_name%2Cname+FROM+user+WHERE+uid+%3D+'.$me['id'].'&locale=ja_JP');//ふりがな
+            //if(!empty($me_kana)){//フリガナ設定をしているユーザのみ
+            // mb_convert_variables('UTF-8', 'auto', $me_kana);
+            // $this->Session->write('fbdata_kana',$me_kana);//フリガナデータをセッションに保存
+        //}
+            // $this->redirect('showdata');
+        }else{//認証前
+            $url = $this->facebook->getLoginUrl(array(
+            'scope' => 'email,publish_stream,user_birthday'
+            ,'canvas' => 1,'fbconnect' => 0));
+            $this->redirect($url);
+        }
+    }
+ 
+    private function createFacebook() {//appID, secretを記述
+        return new Facebook(array(
+            'appId' => '1438742749671249',
+            'secret' => 'a92d5b25a8795cda2c618f6767f9a2c3'
+        ));
+    }
+ 
+    public function fbpost($postData) {//facebookのwallにpostする処理
+        $facebook = $this->createFacebook();
+        $attachment = array(
+            'access_token' => $facebook->getAccessToken(), //access_token入手
+            'message' => $postData,
+            'name' => "test",
+            'link' => "http://twitter.com/gak_rak",
+            'description' => "test",
+        );
+        $facebook->api('/me/feed', 'POST', $attachment);
+    }
+
 		public function login(){//ログイン
-            if($this->request->is('post')){//POST送信なら
+             if($this->request->is('post')){//POST送信なら
                 if($this->Auth->login()){//ログイン成功なら
                 	$nick = $this->request->data['User']['name'];
                 	$this->Session->write('myname', $nick);
@@ -39,7 +113,7 @@
                 }else{ //ログイン失敗なら
                     $this->Session->setFlash(__('ユーザ名かパスワードが違います'), 'default', array(), 'auth');
                 }
-            }
+             }
         }
  
         public function logout(){//ログアウト
@@ -72,9 +146,10 @@
         }
 
 		public function index(){
+             // $this->set("action",$this->action);
             // $this->set('name',$this->request->data['User']['name']);
             if(isset($this->request->data['asc'])) {
-                $this->set('data',$this->request->data('all',array('order' => 'Board.id ASC')));
+                $this->set('data',$this->Board->find('all',array('order' => 'Board.id ASC')));
             }else{
 		         $box = $this->set('data',$this->Board->find('all',array('order' => 'Board.id DESC')));
             }
