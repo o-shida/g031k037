@@ -53,7 +53,7 @@ foreach($data as $value){
 		if($value['Board']['user_id'] == $key['User']['id']){
 	 		echo $key['User']['name'].' ';
 	 		echo $key['User']['email'].' ';
-		 	if($user_a['name'] == $key['User']['name']){
+		 	if($user_a['id'] == $key['User']['id']){
 			echo $this->html->link('編集','/Boards/edit/'.$id,array('escape'=>false));
 			echo $this->html->link('×','/Boards/delete/'.$id,array('escape'=>false));
 			}
