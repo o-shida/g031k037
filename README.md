@@ -11,6 +11,7 @@ g031k037
 
 - 基礎課題2
 [動作ページ](http://tense-tuyet.gopagoda.com/)
+pagodabox　→　https://dashboard.pagodabox.com/apps/tense-tuyet/dns-aliases
 
 第10回 課題
 ----------------
