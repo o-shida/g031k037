@@ -20,7 +20,7 @@
 			<h1>掲示板</h1>
 		</div>
 		<div id="content">
-
+		<!-- <a href="http://49.212.46.130/~g031k037/cake/boards/m_index" data-rel="mobile">モバイル版</a> -->
 			<?php echo $this->Session->flash(); ?>
 
 			<?php echo $this->fetch('content'); ?>

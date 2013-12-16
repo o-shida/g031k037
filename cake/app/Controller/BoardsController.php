@@ -8,6 +8,7 @@ App::import('Vendor','facebook',array('file' => 'facebook'.DS.'src'.DS.'facebook
 		public $components = array(
             'DebugKit.Toolbar', //デバッグきっと
             'TwitterKit.Twitter', //twitter
+            'RequestHandler',//MobileでみているかPC上でみているかを判断する
             'Auth' => array( //ログイン機能を利用する
                 'authenticate' => array(
                     'Form' => array(
@@ -27,8 +28,10 @@ App::import('Vendor','facebook',array('file' => 'facebook'.DS.'src'.DS.'facebook
         );
 		public $helpers = array('Html');
 		public $layout = 'board';
+
 		public function beforeFilter(){//login処理の設定
-		 	$this->Auth->allow('login','logout','useradd','twitter_login','oauth_callback','index','facebook','fbpost','createFacebook');//ログインしないで、アクセスできるアクションを登録する
+            //許可
+		 	$this->Auth->allow('m_index','login','logout','useradd','twitter_login','oauth_callback','index','facebook','fbpost','createFacebook');//ログインしないで、アクセスできるアクションを登録する
 		 	$this->set('user_a',$this->Auth->user()); // ctpで$userを使えるようにする 
 		}
 
@@ -104,6 +107,9 @@ App::import('Vendor','facebook',array('file' => 'facebook'.DS.'src'.DS.'facebook
         }
 
 		public function login(){//ログイン
+            if($this->RequestHandler->isMobile()){
+                $this->layout = 'jq_m';
+            }
              if($this->request->is('post')){//POST送信なら
                 if($this->Auth->login()){//ログイン成功なら
                 	$nick = $this->request->data['User']['name'];
@@ -113,7 +119,7 @@ App::import('Vendor','facebook',array('file' => 'facebook'.DS.'src'.DS.'facebook
                 }else{ //ログイン失敗なら
                     $this->Session->setFlash(__('ユーザ名かパスワードが違います'), 'default', array(), 'auth');
                 }
-             }
+            }
         }
  
         public function logout(){//ログアウト
@@ -124,6 +130,9 @@ App::import('Vendor','facebook',array('file' => 'facebook'.DS.'src'.DS.'facebook
         }
  
 		public function useradd(){//新規登録
+            if($this->RequestHandler->isMobile()){
+                $this->layout = 'jq_m';
+            }
             if($this->request->is('post')) {
                 if ($this->request->data['User']['password'] === $this->request->data['User']['pass_check']){//パスワードが一致するか
                     $data = $this->request->data;
@@ -146,7 +155,10 @@ App::import('Vendor','facebook',array('file' => 'facebook'.DS.'src'.DS.'facebook
         }
 
 		public function index(){
-             // $this->set("action",$this->action);
+            if($this->RequestHandler->isMobile()){
+                $this->layout = 'jq_m';
+            }
+             $this->set("action",$this->action);
             // $this->set('name',$this->request->data['User']['name']);
             if(isset($this->request->data['asc'])) {
                 $this->set('data',$this->Board->find('all',array('order' => 'Board.id ASC')));
@@ -157,6 +169,9 @@ App::import('Vendor','facebook',array('file' => 'facebook'.DS.'src'.DS.'facebook
 		}
         //引数を$idのみにするとエラーが出てしまうため今のところ引数を　$id = null で記述しています
         	public function create($id = null){
+            if($this->RequestHandler->isMobile()){
+                $this->layout = 'jq_m';
+            }
 			$this->set("action",$this->action);
 			if(isset($this->request->data['create']['contribution'])){//コメント投稿する場合
 				$this->set('data',$this->request->data['create']['contribution']); 
@@ -165,6 +180,9 @@ App::import('Vendor','facebook',array('file' => 'facebook'.DS.'src'.DS.'facebook
 		}
 
 		public function entry(){//コメントを保存
+            if($this->RequestHandler->isMobile()){
+                $this->layout = 'jq_m';
+            }
 			$this->Board->toukou($this->request->data);
             $this->request->data['Board']['user_id'] = $this->Auth->user('id');
             $this->Board->save($this->request->data);
@@ -173,17 +191,26 @@ App::import('Vendor','facebook',array('file' => 'facebook'.DS.'src'.DS.'facebook
 		}
 
 		public function compile($id = null){//コメントを編集
+            if($this->RequestHandler->isMobile()){
+                $this->layout = 'jq_m';
+            }
 			if($id == null){
 				$this->set('id_data',$this->request->data['edit']);
 			}
 		}
 
 		public function last(){//編集結果を保存
+            if($this->RequestHandler->isMobile()){
+                $this->layout = 'jq_m';
+            }
 			$this->Board->end($this->request->data['entry']);
 			$this->redirect(array('action' => 'index'));
 		}
 
 		public function edit($id){//編集画面に移る
+            if($this->RequestHandler->isMobile()){
+                $this->layout = 'jq_m';
+            }
 			$this->set("action",$this->action);
 			$this->set('id_data',$this->Board->findById($id));
 			$this->render('create');
@@ -194,6 +221,9 @@ App::import('Vendor','facebook',array('file' => 'facebook'.DS.'src'.DS.'facebook
 			$this->redirect(array('action' => 'index'));
 		}
         public function search(){//検索
+            if($this->RequestHandler->isMobile()){
+                $this->layout = 'jq_m';
+            }
             $num = $this->request->data['search']['num'];
             $word = $this->request->data['search']['word'];
             $this->set('num',$num);

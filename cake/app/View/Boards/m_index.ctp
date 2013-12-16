@@ -1,6 +1,6 @@
 <div class="hero-unit">
     <!-- <?php echo $this->Session->flash('Auth'); ?> -->
-    <?php echo $this->Form->create('User', array('url' => 'login')); ?>
+    <?php echo $this->Form->create('User', array('url' => 'm_login')); ?>
     <?php echo $this->Form->input('User.name', array('label' => '名前')); ?>
     <?php echo $this->Form->input('User.password', array('label' => 'パスワード')); ?>
     <?php echo $this->Form->end('ログイン'); ?>
@@ -14,12 +14,7 @@
     <?php endif ; ?>
     <a href="facebook">facebook でlogin</a>
      <?php echo '<br >' ?>
-    <a href="useradd" id="switch" class="label btn-primary">新規登録</a>
+     <a href="login">PC版</a>
     <?php echo '<br >' ?>
- <!--    <?php echo $this->Form->create('mobile',array(//昇順に並び替え
-                'type' => 'post',
-                'url' => 'm_index'
-                ));
-        echo $this->Form->submit('モバイル版',array('name'=>'mobile','div'=>false));
-    ?> -->
+    <a href="useradd" id="switch" class="label btn-primary">新規登録</a>
 </div>
